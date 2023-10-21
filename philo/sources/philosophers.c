@@ -69,6 +69,7 @@ int main(int argc, char **argv)
 	// il faudrait initialiser des mutexs dont je ne comprend pas l'utilite encore
 	threads = ft_create_threads(ft_atoi(argv[1]));
 	printf("threads created\n");
+	forks = ft_forks_creation(ft_atoi(argv[1]));
 	philo = ft_init_philos(forks, philo, argc, argv);
 	printf("philo initialized\n");
 	philo = ft_init_philo_threads(philo, threads, ft_atoi(argv[1]));

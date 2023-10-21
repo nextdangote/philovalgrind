@@ -1,11 +1,26 @@
 #include "../include/philosophers.h"
+pthread_mutex_t *ft_forks_creation(int i)
+{
+	int j;
+	pthread_mutex_t	*fork;
+	
+	j = 0;
+	fork = (pthread_mutex_t *) malloc (sizeof(pthread_mutex_t) * i);
+	if (!fork)
+		return NULL;
+	while(j < i)
+	{
+		pthread_mutex_init(&fork[j], NULL);
+		j++;
+	}
+	return(fork);
+}
 
 void    ft_init_forks(pthread_mutex_t *fork, int amount, t_philo *philo, char **argv)
 {
     int i;
 
     i = 0;
-	fork = (pthread_mutex_t *) malloc (sizeof(pthread_mutex_t) * ft_atoi(argv[1]));
 	if (!fork)
 		return;
     while (i < amount)
