@@ -5,10 +5,10 @@ void    *ft_philo_life_routine(void *param)
     t_philo *philo;
 
     philo = (t_philo*)param;
-    printf("philo id is %d\n", philo->index);
+    //printf("philo id is %d\n", philo->index);
     if(philo->index % 2 == 0)
-        ft_usleep(1);
-    while(1)//dead_or_alive(philo))
+         ft_usleep(1);
+    while(dead_or_alive(philo))
     {
         ft_eat(philo);
         ft_sleep(philo);
@@ -26,20 +26,36 @@ void    ft_threading(t_philo *philo)
 	i = 0;
 	amount_of_threads = philo[i].amount;
     printf("%d\n", amount_of_threads);
-    pthread_create(&checker, NULL, ft_checker, &philo);
+    /*if (pthread_create(&checker, NULL, ft_checker, philo) != 0)
+    {
+        printf("error creating thread philo");
+        ft_destroy(philo);
+    }*/
 	while(i < amount_of_threads)
 	{
-		pthread_create(&philo[i].thread_phil, NULL, ft_philo_life_routine, &philo[i]);
+		if (pthread_create(&philo[i].thread_phil, NULL, ft_philo_life_routine, &philo[i]) != 0)
+        {
+            printf("error creating thread checker\n");
+            ft_destroy(philo);
+        }
         i++;
 	}
 
     i = 0;
-    pthread_join(checker, NULL);
-    // while(i < amount_of_threads)
-	// {
-	// 	pthread_join(philo[i].thread_phil, NULL);
-    //     i++;
-    // }
+    /*if (pthread_join(checker, NULL) != 0)
+    {
+        printf("error joining thread checker");
+        ft_destroy(philo);
+    }*/
+    /*while(i < amount_of_threads)
+	{
+		if(pthread_join(philo[i].thread_phil, NULL) != 0)
+        {
+            printf("error creating thread philo");
+            ft_destroy(philo);
+        }
+        i++;
+    }*/
     ft_pjoin(philo);
 }
 

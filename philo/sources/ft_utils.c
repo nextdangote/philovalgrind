@@ -9,26 +9,22 @@ void    ft_error_message(char *str)
 void    ft_print_action(char *str, t_philo *philo)
 {
     pthread_mutex_lock(philo->print_lock);
-    printf("%lu ", get_proper_time() - philo->start_time);
-    printf("%d ", philo->index);
-    printf("%s", str);
+    printf("%lu %d %s", get_proper_time() - philo->start_time,  philo->index, str);
     pthread_mutex_unlock(philo->print_lock);
 }
 
-void    ft_destroy(pthread_mutex_t *forks, int amount, t_philo *philo)
+void    ft_destroy(t_philo *philo)
 {
     int i;
 
     i = 0;
     pthread_mutex_destroy(philo->dead_lock);
-    pthread_mutex_destroy(philo->sleep_lock);
+    //pthread_mutex_destroy(philo->sleep_lock);
     pthread_mutex_destroy(philo->food_lock);
     pthread_mutex_destroy(philo->print_lock);
-    while (i < amount)
+    while (i < philo->amount)
     {
-        pthread_mutex_destroy(&forks[i]);
-        pthread_mutex_destroy(&philo[i].left_fork);
-        pthread_mutex_destroy(&philo[i].right_fork);
+        pthread_mutex_destroy(philo[i].left_fork);
         i++;
     }
 }
