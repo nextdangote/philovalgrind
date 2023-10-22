@@ -37,8 +37,9 @@ typedef struct s_philo
     pthread_mutex_t *print_lock;
     pthread_mutex_t *dead_lock;
     pthread_mutex_t *sleep_lock;
-    pthread_mutex_t left_fork;
-    pthread_mutex_t right_fork;
+    pthread_mutex_t *meals_count_lock;
+    pthread_mutex_t *left_fork;
+    pthread_mutex_t *right_fork;
 }   t_philo;
 
 //initialization
@@ -46,6 +47,7 @@ void    ft_init_forks(pthread_mutex_t *fork, int amount, t_philo *philo, char **
 t_philo    *ft_init_philos(pthread_mutex_t *forks, t_philo *philo, int argc, char **argv);
 t_philo	*ft_init_philo_threads(t_philo *philo, pthread_t *thread, int amount_of_philos);
 void    *ft_checker(void *param);
+pthread_mutex_t *ft_forks_creation(int i);
 
 //actions
 void     ft_eat(t_philo *philo);
@@ -68,6 +70,6 @@ int dead_or_alive(t_philo *philo);
 void ft_pjoin(t_philo *philo);
 
 //free & destroy
-void    ft_destroy(pthread_mutex_t *forks, int amount, t_philo *philo);
+void    ft_destroy(t_philo *philo);
 
 #endif

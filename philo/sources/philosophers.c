@@ -78,6 +78,14 @@ int main(int argc, char **argv)
 	ft_init_forks(forks, ft_atoi(argv[1]), philo, argv);
 	printf("forks initialized\n");
 	printf("number of eating round : %d\n", philo->total_eating_round);
+	printf("philo amount is %d\n", philo[0].amount);
+	// printf("philo amount is %d\n", philo[1].amount);
+	// printf("philo amount is %d\n", philo[2].amount);
+	// printf("philo amount is %d\n", philo[3].amount);
+	// printf("philo amount is %d\n", philo[4].amount);
+	// printf("philo amount is %d\n", philo[5].amount);
+	// printf("philo amount is %d\n", philo[6].amount);
+	// printf("philo amount is %d\n", philo[7].amount);
 	ft_threading(philo);
 	printf("the threads ran like they should\n");
 	// ft_pjoin(philo, threads);

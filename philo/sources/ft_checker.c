@@ -21,22 +21,65 @@
 
 // }
 
-int    ft_check_all_eat(t_philo *philo)
+// int    ft_check_all_eat(t_philo *philo)
+// {
+//     int end;
+//     int value;
+//     static int i = 0;
+//     end = (philo->total_eating_round * (philo[0].amount - 1)) + 1;
+//     // if (i == 0)
+//     // {
+//     //     printf("end = %d\n", end);
+//     //     i++;
+//     // }
+//     pthread_mutex_lock(philo->food_lock);
+//     value = *(philo->meals_total);
+//     printf("value is %d\n", value);
+//     //pthread_mutex_lock(philo->meals_count_lock);
+//     if (value <= end)
+//     {
+//         *philo->dead = 1;
+//         pthread_mutex_unlock(philo->food_lock);
+//         //pthread_mutex_unlock(philo->meals_count_lock);
+//         return(1);
+//     }
+//     //pthread_mutex_unlock(philo->meals_count_lock);
+//     pthread_mutex_unlock(philo->food_lock);
+//     return(0);
+// }
+
+
+int	ft_check_all_eat(t_philo *philos)
 {
-    int end;
+	int	i;
+	int	finished_eating;
+    int nbr_philo = philos[0].amount;
 
-    end = philo->total_eating_round * philo[0].amount;
-    pthread_mutex_lock(philo->food_lock);
-    if (*philo->meals_total >= end)
-    {
-        *philo->dead = 1;
-        pthread_mutex_unlock(philo->food_lock);
-        return(1);
-    }
-    pthread_mutex_unlock(philo->food_lock);
-    return(0);
+	i = 0;
+	finished_eating = 0;
+	if (philos[0].total_eating_round == 0)
+		return (0);
+	while (i < nbr_philo)
+	{
+		pthread_mutex_lock(philos->food_lock);
+		if (philos[i].eating_round >= (philos->total_eating_round))
+        {
+			finished_eating++;
+            //printf("%d philo finished eating\n", finished_eating);
+            //pthread_mutex_unlock(philos[i].food_lock);
+        }
+		pthread_mutex_unlock(philos->food_lock);
+		i++;
+	}
+	if (finished_eating == nbr_philo)
+	{
+		pthread_mutex_lock(philos->dead_lock);
+		*philos->dead = 1;
+		pthread_mutex_unlock(philos->dead_lock);
+		return (1);
+	}
+	return (0);
 }
-
 // int   ft_check_death(t_philo *philo)
 // {
 //     int i;
@@ -70,7 +113,7 @@ void    *ft_checker(void *param)
     //if the philo.dead = TRUE or philo.full = TRUE -> on va arreter le programme
     while(1)
     {
-        if(ft_check_all_eat(philo))
+        if(ft_check_all_eat(philo) == 1)
         {
             //ft_destroy_threads(philo);
             break;

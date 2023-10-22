@@ -9,7 +9,8 @@ void    ft_error_message(char *str)
 void    ft_print_action(char *str, t_philo *philo)
 {
     pthread_mutex_lock(philo->print_lock);
-    printf("%lu %d %s", get_proper_time() - philo->start_time,  philo->index, str);
+    if(dead_or_alive(philo))
+        printf("%lu %d %s", get_proper_time() - philo->start_time,  philo->index, str);
     pthread_mutex_unlock(philo->print_lock);
 }
 
@@ -35,10 +36,15 @@ void ft_pjoin(t_philo *philo)
     int amount;
 
     i = 0;
-    amount = philo[i].amount;
+    amount = philo[0].amount;
     while (i < amount)
     {
-        pthread_join(philo[i].thread_phil, NULL);
+        if(pthread_join(philo[i].thread_phil, NULL) != 0)
+        {
+            ft_destroy(philo);
+            break;
+        }
+        printf("join thread phil %d\n", i);
         i++;
     }
 }
