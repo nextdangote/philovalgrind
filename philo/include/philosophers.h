@@ -36,18 +36,26 @@ typedef struct s_philo
     pthread_mutex_t *food_lock;
     pthread_mutex_t *print_lock;
     pthread_mutex_t *dead_lock;
-    pthread_mutex_t *sleep_lock;
     pthread_mutex_t *meals_count_lock;
     pthread_mutex_t *left_fork;
     pthread_mutex_t *right_fork;
 }   t_philo;
 
+typedef struct s_my_locks
+{
+    pthread_mutex_t *print_lock;
+    pthread_mutex_t *dead_lock;
+    pthread_mutex_t *food_lock;
+    pthread_mutex_t *meals_count_lock;
+}   t_my_locks;
+
 //initialization
-void    ft_init_forks(pthread_mutex_t *fork, int amount, t_philo *philo, char **argv);
-t_philo    *ft_init_philos(pthread_mutex_t *forks, t_philo *philo, int argc, char **argv);
-t_philo	*ft_init_philo_threads(t_philo *philo, pthread_t *thread, int amount_of_philos);
+void    ft_init_forks(pthread_mutex_t *fork, int amount, t_philo *philo);
+t_philo *ft_init_philos(pthread_mutex_t *forks, t_philo *philo, int argc, char **argv);
+t_philo	*ft_init_philo_threads(t_philo *philo, pthread_t *thread, int amount_of_philos, t_my_locks *mylocks);
 void    *ft_checker(void *param);
 pthread_mutex_t *ft_forks_creation(int i);
+t_my_locks	*ft_create_my_locks();
 
 //actions
 void     ft_eat(t_philo *philo);
@@ -70,6 +78,6 @@ int dead_or_alive(t_philo *philo);
 void ft_pjoin(t_philo *philo);
 
 //free & destroy
-void    ft_destroy(t_philo *philo);
+void    ft_destroy(t_philo *philo, pthread_mutex_t *forks, t_my_locks *my_locks);
 
 #endif

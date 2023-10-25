@@ -14,18 +14,18 @@ void    ft_print_action(char *str, t_philo *philo)
     pthread_mutex_unlock(philo->print_lock);
 }
 
-void    ft_destroy(t_philo *philo)
+void    ft_destroy(t_philo *philo, pthread_mutex_t *forks, t_my_locks *my_locks)
 {
     int i;
 
     i = 0;
-    pthread_mutex_destroy(philo->dead_lock);
-    //pthread_mutex_destroy(philo->sleep_lock);
-    pthread_mutex_destroy(philo->food_lock);
-    pthread_mutex_destroy(philo->print_lock);
+    pthread_mutex_destroy(my_locks->dead_lock);
+    pthread_mutex_destroy(my_locks->meals_count_lock);
+    pthread_mutex_destroy(my_locks->food_lock);
+    pthread_mutex_destroy(my_locks->print_lock);
     while (i < philo->amount)
     {
-        pthread_mutex_destroy(philo[i].left_fork);
+        pthread_mutex_destroy(&forks[i]);
         i++;
     }
 }
@@ -41,7 +41,7 @@ void ft_pjoin(t_philo *philo)
     {
         if(pthread_join(philo[i].thread_phil, NULL) != 0)
         {
-            ft_destroy(philo);
+            //ft_destroy(philo);
             break;
         }
         printf("join thread phil %d\n", i);

@@ -57,39 +57,28 @@ int main(int argc, char **argv)
 	t_philo   *philo;
 	pthread_t *threads;
 	pthread_mutex_t *forks;
-	int i;
+	t_my_locks	*my_locks;
 
-	i = 0;
 	philo = NULL;
 	threads = NULL;
 	forks = NULL;
+	my_locks = NULL;
 	if (argc != 5 && argc != 6)
 		ft_error_message(E_WRONGINPUT);
 	ft_check_arg(argc , argv);
-	// il faudrait initialiser des mutexs dont je ne comprend pas l'utilite encore
 	threads = ft_create_threads(ft_atoi(argv[1]));
-	printf("threads created\n");
 	forks = ft_forks_creation(ft_atoi(argv[1]));
-	printf("forks created\n");
+	printf("forks are initialized\n");
+	my_locks = ft_create_my_locks();
+	printf("locks are initialized\n");
+	// (void)threads;
+	// (void)philo;
+	// (void)my_locks;
+	// (void)forks;
 	philo = ft_init_philos(forks, philo, argc, argv);
-	printf("philo initialized\n");
-	philo = ft_init_philo_threads(philo, threads, ft_atoi(argv[1]));
-	printf("philo's threads initialized\n");
-	ft_init_forks(forks, ft_atoi(argv[1]), philo, argv);
-	printf("forks initialized\n");
-	printf("number of eating round : %d\n", philo->total_eating_round);
-	printf("philo amount is %d\n", philo[0].amount);
-	// printf("philo amount is %d\n", philo[1].amount);
-	// printf("philo amount is %d\n", philo[2].amount);
-	// printf("philo amount is %d\n", philo[3].amount);
-	// printf("philo amount is %d\n", philo[4].amount);
-	// printf("philo amount is %d\n", philo[5].amount);
-	// printf("philo amount is %d\n", philo[6].amount);
-	// printf("philo amount is %d\n", philo[7].amount);
+	philo = ft_init_philo_threads(philo, threads, ft_atoi(argv[1]), my_locks);
+	ft_init_forks(forks, ft_atoi(argv[1]), philo);
 	ft_threading(philo);
-	printf("the threads ran like they should\n");
-	// ft_pjoin(philo, threads);
-	// ft_destroy(philo->amount, philo);
-	//should I free the philo array and thread array ?
+	ft_destroy(philo, forks, my_locks);
 	return 0;
 }

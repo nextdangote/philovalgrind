@@ -16,7 +16,7 @@ pthread_mutex_t *ft_forks_creation(int i)
 	return(fork);
 }
 
-void    ft_init_forks(pthread_mutex_t *fork, int amount, t_philo *philo, char **argv)
+void    ft_init_forks(pthread_mutex_t *fork, int amount, t_philo *philo)
 {
     int i;
 
@@ -66,44 +66,35 @@ t_philo	*ft_init_philo_part2(t_philo *philo, int argc, char **argv)
 
 t_philo    *ft_init_philos(pthread_mutex_t *forks, t_philo *philo, int argc, char **argv)
 {
-    int i;
-
-    i = 0;
     philo = (t_philo *)malloc(sizeof(t_philo) * ft_atoi(argv[1]));
 	if (!philo)
 		return(NULL);
 	philo = ft_init_philo_part2(philo, argc, argv);
-	ft_init_forks(forks, ft_atoi(argv[1]), philo, argv);
+	ft_init_forks(forks, ft_atoi(argv[1]), philo);
 	return(philo);
 }
 
-t_philo	*ft_init_philo_threads(t_philo *philo, pthread_t *thread, int amount_of_philos)
+t_philo	*ft_init_philo_threads(t_philo *philo, pthread_t *thread, int amount_of_philos, t_my_locks *my_locks)
 {
 	int	i;
-	int total_meals;
-	// pthread_mutex_t	*food_lock;
-	// pthread_mutex_t	*print_lock;
-	// pthread_mutex_t	*dead_lock;
-	//pthread_mutex_t	*sleep_lock;
+	// pthread_mutex_t *food_lock = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+    // pthread_mutex_t *print_lock = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+    // pthread_mutex_t *dead_lock = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+	// pthread_mutex_t *meals_count_lock = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
 
-	pthread_mutex_t *food_lock = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
-    pthread_mutex_t *print_lock = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
-    pthread_mutex_t *dead_lock = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
-	pthread_mutex_t *meals_count_lock = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
-
-	pthread_mutex_init(food_lock, NULL);
-	pthread_mutex_init(print_lock, NULL);
-	pthread_mutex_init(dead_lock, NULL);
-	pthread_mutex_init(meals_count_lock, NULL);
+	// pthread_mutex_init(food_lock, NULL);
+	// pthread_mutex_init(print_lock, NULL);
+	// pthread_mutex_init(dead_lock, NULL);
+	// pthread_mutex_init(meals_count_lock, NULL);
 	//total_meals = 0;
 	i = 0;
 	while(i < amount_of_philos)
 	{
 		philo[i].thread_phil = thread[i];
-		philo[i].food_lock = food_lock;
-		philo[i].print_lock = print_lock;
-		philo[i].dead_lock = dead_lock;
-		philo[i].meals_count_lock = meals_count_lock;
+		philo[i].food_lock = my_locks->food_lock;
+		philo[i].print_lock = my_locks->print_lock;
+		philo[i].dead_lock = my_locks->dead_lock;
+		philo[i].meals_count_lock = my_locks->meals_count_lock;
 		//philo[i].meals_total = &total_meals;
 		philo[i].eating_round = 0;
 		philo[i].in_degustation = 0;
@@ -112,7 +103,30 @@ t_philo	*ft_init_philo_threads(t_philo *philo, pthread_t *thread, int amount_of_
 	return(philo);
 }
 
-// void	ft_init_threads(pthread_t *threads, t_philo *philo)
-// {
-	
-// }
+t_my_locks	*ft_create_my_locks()
+{
+	t_my_locks *my_locks;
+	pthread_mutex_t *food_lock;
+	pthread_mutex_t *print_lock;
+	pthread_mutex_t *dead_lock;
+	pthread_mutex_t *meals_count_lock;
+
+	my_locks = (t_my_locks *)malloc(sizeof(t_my_locks));
+	if (!my_locks)
+		exit(1);
+	food_lock = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+    print_lock = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+    dead_lock = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+	meals_count_lock = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+	if (!food_lock || !print_lock || !dead_lock || !meals_count_lock)
+		exit(1);
+	pthread_mutex_init(food_lock, NULL);
+	pthread_mutex_init(print_lock, NULL);
+	pthread_mutex_init(dead_lock, NULL);
+	pthread_mutex_init(meals_count_lock, NULL);
+	my_locks->dead_lock = dead_lock;
+	my_locks->food_lock = food_lock;
+	my_locks->print_lock = print_lock;
+	my_locks->meals_count_lock = meals_count_lock;
+	return (my_locks);
+}

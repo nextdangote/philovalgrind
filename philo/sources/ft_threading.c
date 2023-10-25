@@ -6,7 +6,7 @@ void    *ft_philo_life_routine(void *param)
 
     philo = (t_philo*)param;
     if(philo->index % 2 == 0)
-         ft_usleep(2);
+         ft_usleep(1);
     while(dead_or_alive(philo))
     {
         ft_eat(philo);
