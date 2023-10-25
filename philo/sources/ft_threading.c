@@ -6,7 +6,7 @@
 /*   By: aguede <aguede@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 18:11:53 by aguede            #+#    #+#             */
-/*   Updated: 2023/10/25 18:14:13 by aguede           ###   ########.fr       */
+/*   Updated: 2023/10/25 18:56:31 by aguede           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	*ft_philo_life_routine(void *param)
 }
 
 void	ft_threading(t_philo *philo, pthread_mutex_t *forks,
-		t_my_locks *my_locks)
+		t_my_locks *my_locks, pthread_t *threads)
 {
 	int			i;
 	int			amount_of_threads;
@@ -39,21 +39,21 @@ void	ft_threading(t_philo *philo, pthread_mutex_t *forks,
 	i = 0;
 	amount_of_threads = philo[i].amount;
 	if (pthread_create(&checker, NULL, ft_checker, philo) != 0)
-		ft_destroy(philo, forks, my_locks);
+		ft_destroy(philo, forks, my_locks, threads);
 	while (i < amount_of_threads)
 	{
 		if (pthread_create(&philo[i].thread_phil, NULL, ft_philo_life_routine,
 				&philo[i]) != 0)
-			ft_destroy(philo, forks, my_locks);
+			ft_destroy(philo, forks, my_locks, threads);
 		i++;
 	}
 	i = 0;
 	if (pthread_join(checker, NULL) != 0)
-		ft_destroy(philo, forks, my_locks);
+		ft_destroy(philo, forks, my_locks, threads);
 	while (i < amount_of_threads)
 	{
 		if (pthread_join(philo[i].thread_phil, NULL) != 0)
-			ft_destroy(philo, forks, my_locks);
+			ft_destroy(philo, forks, my_locks, threads);
 		i++;
 	}
 }

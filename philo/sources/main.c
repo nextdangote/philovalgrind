@@ -6,7 +6,7 @@
 /*   By: aguede <aguede@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 18:22:19 by aguede            #+#    #+#             */
-/*   Updated: 2023/10/25 18:23:59 by aguede           ###   ########.fr       */
+/*   Updated: 2023/10/25 18:57:10 by aguede           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int	main(int argc, char **argv)
 	philo = ft_init_philos(forks, philo, argc, argv);
 	philo = ft_init_philo_threads(philo, threads, ft_atoi(argv[1]), my_locks);
 	ft_init_forks(forks, ft_atoi(argv[1]), philo);
-	ft_threading(philo, forks, my_locks);
-	ft_destroy(philo, forks, my_locks);
+	ft_threading(philo, forks, my_locks, threads);
+	ft_destroy(philo, forks, my_locks, threads);
 	return (0);
 }

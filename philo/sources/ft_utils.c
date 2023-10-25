@@ -6,7 +6,7 @@
 /*   By: aguede <aguede@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 18:18:41 by aguede            #+#    #+#             */
-/*   Updated: 2023/10/25 18:21:07 by aguede           ###   ########.fr       */
+/*   Updated: 2023/10/25 19:03:11 by aguede           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	ft_print_action(char *str, t_philo *philo)
 	pthread_mutex_unlock(philo->print_lock);
 }
 
-void	ft_destroy(t_philo *philo, pthread_mutex_t *forks, t_my_locks *my_locks)
+void	ft_destroy(t_philo *philo, pthread_mutex_t *forks, t_my_locks *my_locks, pthread_t *threads)
 {
 	int	i;
 
@@ -41,6 +41,11 @@ void	ft_destroy(t_philo *philo, pthread_mutex_t *forks, t_my_locks *my_locks)
 		pthread_mutex_destroy(&forks[i]);
 		i++;
 	}
+	i = 0;
+	// free(threads);
+	// free(philo);
+	// free(forks);
+	// free(my_locks);
 }
 
 int	get_proper_time(void)

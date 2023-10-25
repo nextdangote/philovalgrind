@@ -6,7 +6,7 @@ OBJS			= $(SRCS:.c=.o)
 
 CC				= cc
 RM				= rm -f
-CFLAGS			= -Wall -Wextra -Werror -I.
+CFLAGS			= -Wno-unused-variable -o -Wall -Wextra -Werror -I.
 
 all:			$(NAME)
 

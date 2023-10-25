@@ -6,7 +6,7 @@
 /*   By: aguede <aguede@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 18:27:29 by aguede            #+#    #+#             */
-/*   Updated: 2023/10/25 18:31:30 by aguede           ###   ########.fr       */
+/*   Updated: 2023/10/25 18:56:52 by aguede           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void				ft_sleep(t_philo *philo);
 void				ft_think(t_philo *philo);
 void				ft_die(t_philo *philo);
 void				ft_threading(t_philo *philo, pthread_mutex_t *forks,
-						t_my_locks *my_locks);
+						t_my_locks *my_locks, pthread_t *threads);
 
 pthread_t			*ft_create_threads(int amount);
 
@@ -89,6 +89,6 @@ int					dead_or_alive(t_philo *philo);
 void				ft_pjoin(t_philo *philo);
 
 void				ft_destroy(t_philo *philo, pthread_mutex_t *forks,
-						t_my_locks *my_locks);
+						t_my_locks *my_locks, pthread_t *threads);
 
 #endif
