@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aguede <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: aguede <aguede@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 19:26:07 by aguede            #+#    #+#             */
-/*   Updated: 2022/12/19 19:26:12 by aguede           ###   ########.fr       */
+/*   Updated: 2023/10/25 17:00:14 by aguede           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,4 +52,3 @@ int	ft_atoi(const char *str)
 	fdp = allerenvoiechacal(s, i);
 	return (fdp * sign);
 }
-

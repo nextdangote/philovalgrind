@@ -1,71 +1,63 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_utils.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aguede <aguede@student.42berlin.de>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/25 18:18:41 by aguede            #+#    #+#             */
+/*   Updated: 2023/10/25 18:21:07 by aguede           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/philosophers.h"
 
-void    ft_error_message(char *str)
+void	ft_error_message(char *str)
 {
-    printf("%s\n", str);
-    exit(1);
+	printf("%s\n", str);
+	exit(1);
 }
 
-void    ft_print_action(char *str, t_philo *philo)
+void	ft_print_action(char *str, t_philo *philo)
 {
-    pthread_mutex_lock(philo->print_lock);
-    if(dead_or_alive(philo))
-        printf("%lu %d %s", get_proper_time() - philo->start_time,  philo->index, str);
-    pthread_mutex_unlock(philo->print_lock);
+	pthread_mutex_lock(philo->print_lock);
+	if (dead_or_alive(philo))
+		printf("%lu %d %s", get_proper_time() - philo->start_time, philo->index,
+			str);
+	pthread_mutex_unlock(philo->print_lock);
 }
 
-void    ft_destroy(t_philo *philo, pthread_mutex_t *forks, t_my_locks *my_locks)
+void	ft_destroy(t_philo *philo, pthread_mutex_t *forks, t_my_locks *my_locks)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    pthread_mutex_destroy(my_locks->dead_lock);
-    pthread_mutex_destroy(my_locks->meals_count_lock);
-    pthread_mutex_destroy(my_locks->food_lock);
-    pthread_mutex_destroy(my_locks->print_lock);
-    while (i < philo->amount)
-    {
-        pthread_mutex_destroy(&forks[i]);
-        i++;
-    }
+	i = 0;
+	pthread_mutex_destroy(my_locks->dead_lock);
+	pthread_mutex_destroy(my_locks->meals_count_lock);
+	pthread_mutex_destroy(my_locks->food_lock);
+	pthread_mutex_destroy(my_locks->print_lock);
+	while (i < philo->amount)
+	{
+		pthread_mutex_destroy(&forks[i]);
+		i++;
+	}
 }
 
-void ft_pjoin(t_philo *philo)
+int	get_proper_time(void)
 {
-    int i;
-    int amount;
+	struct timeval	time_struct;
+	int				time;
 
-    i = 0;
-    amount = philo[0].amount;
-    while (i < amount)
-    {
-        if(pthread_join(philo[i].thread_phil, NULL) != 0)
-        {
-            //ft_destroy(philo);
-            break;
-        }
-        printf("join thread phil %d\n", i);
-        i++;
-    }
+	gettimeofday(&time_struct, NULL);
+	time = (time_struct.tv_sec * 1000) + (time_struct.tv_usec / 1000);
+	return (time);
 }
 
-int get_proper_time()
+void	ft_usleep(size_t msec)
 {
-    struct timeval time_struct;
-    int time;
+	size_t	beginning;
 
-    gettimeofday(&time_struct, NULL);
-    time = (time_struct.tv_sec * 1000) + (time_struct.tv_usec / 1000);
-    return(time);
-}
-
-void ft_usleep(size_t msec)
-{
-    size_t beginning;
-
-    beginning = get_proper_time();
-    while((get_proper_time() - beginning) < msec)
-    {
-        usleep(500);// why 500 and not something else ?
-    }
+	beginning = get_proper_time();
+	while ((get_proper_time() - beginning) < msec)
+		usleep(500);
 }
